@@ -1,9 +1,13 @@
-package view.gui;
+package controller;
 
 public class Point {
 
-    private final int x;
-    private final int y;
+    private int x;
+    private int y;
+
+    public Point(){
+        
+    }
 
     public Point(int xPoint, int yPoint){
         this.x = xPoint;
@@ -15,5 +19,11 @@ public class Point {
     }
     public int getY() {
         return this.y;
+    }
+    public void setX(int newX){
+        this.x = newX;
+    }
+    public void setY(int newY){
+        this.y = newY;
     }
 }
