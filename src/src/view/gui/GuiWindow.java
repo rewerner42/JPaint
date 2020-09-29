@@ -11,7 +11,6 @@ import view.interfaces.IGuiWindow;
 import view.EventName;
 
 import java.awt.*;
-import java.awt.event.MouseListener;
 
 public class GuiWindow extends JFrame implements IGuiWindow {
     private final int defaultWidth = 1250;
@@ -30,7 +29,6 @@ public class GuiWindow extends JFrame implements IGuiWindow {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         JPanel window = createWindow();
         window.add(canvas, BorderLayout.CENTER);
-        window.addMouseListener(new MouseHandler());
 		validate();
     }
 

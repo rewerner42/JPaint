@@ -1,7 +1,7 @@
 package controller;
 import java.util.Stack;
 
-class CommandHistory {
+public class CommandHistory {
 	private static final Stack<IUndoable> undoStack = new Stack<IUndoable>();
 	private static final Stack<IUndoable> redoStack = new Stack<IUndoable>();
 

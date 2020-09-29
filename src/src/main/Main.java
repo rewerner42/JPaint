@@ -9,9 +9,11 @@ import view.gui.PaintCanvas;
 import view.interfaces.IGuiWindow;
 import view.interfaces.PaintCanvasBase;
 import view.interfaces.IUiModule;
-//import view.gui.MouseHandler;
+import view.gui.MouseHandler;
 
 import java.awt.*;
+//import java.awt.event.MouseListener;
+//import java.awt.event.MouseAdapter;
 
 public class Main {
     public static void main(String[] args){
@@ -24,6 +26,7 @@ public class Main {
         System.out.print("hello");
         //paintCanvas.setCursor((new Cursor(Cursor.CROSSHAIR_CURSOR)));
         controller.setup();
+        paintCanvas.addMouseListener(new MouseHandler(appState,paintCanvas));
 
         // For example purposes only; remove all lines below from your final project.
 
