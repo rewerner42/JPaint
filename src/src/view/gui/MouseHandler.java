@@ -1,7 +1,10 @@
 package view.gui;
 
 import controller.Point;
+import controller.commands.CreateShapeCommand;
+import model.ShapeDrawer;
 import model.persistence.*;
+import model.shapes.ShapeList;
 import view.gui.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -12,10 +15,12 @@ import java.awt.*;
 
 public class MouseHandler extends MouseAdapter{
 
-    PaintCanvasBase paintCanvas;
-    ApplicationState applicationState;
-    Point startPoint;
-    Point endPoint;
+    private PaintCanvasBase paintCanvas;
+    private ApplicationState applicationState;
+    private ShapeDrawer shapeDrawer;
+    private ShapeList shapeList;
+    private Point startPoint;
+    private Point endPoint;
 
     public MouseHandler(){
         super();
@@ -25,21 +30,27 @@ public class MouseHandler extends MouseAdapter{
         super();
         this.applicationState = aState;
         this.paintCanvas = pCanvas;
+        shapeDrawer = new ShapeDrawer(paintCanvas,applicationState);
+        shapeList = new ShapeList(shapeDrawer);
     }
 
     @Override
     public void mousePressed(MouseEvent e){
         startPoint = new Point(e.getX(),e.getY());
-        System.out.println("click"+" "+e.getX()+" "+e.getY());
+        //System.out.println("click"+" "+e.getX()+" "+e.getY());
     }
     @Override
     public void mouseReleased(MouseEvent e){
         endPoint = new Point(e.getX(),e.getY());
-        Graphics2D graphics2d = paintCanvas.getGraphics2D();
-        graphics2d.setColor(Color.GREEN);
-        draw(graphics2d);
-        System.out.println("unclick"+" "+e.getX()+" "+e.getY());
+        //Graphics2D graphics2d = paintCanvas.getGraphics2D();
+        //graphics2d.setColor(Color.GREEN);
+        new CreateShapeCommand(shapeList,startPoint,endPoint).run();
+        
+        //System.out.println("unclick"+" "+e.getX()+" "+e.getY());
     }
+
+    /*
+    Draw function for testing purposes
 
     public void draw(Graphics2D g2d){
         int x1 = startPoint.getX();
@@ -48,5 +59,5 @@ public class MouseHandler extends MouseAdapter{
         int y2 = endPoint.getY();
         
         g2d.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x1-x2),Math.abs(y1-y2));
-    }
+    } */
 }
