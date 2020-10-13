@@ -21,16 +21,17 @@ public class CreateShapeCommand implements ICommand, IUndoable{
         this.appState = appState;
     }
     public void run(){ //needs start point and end point
-        this.shapeList.addShape(ShapeFactory.getShape(this.startPoint, this.endPoint, this.appState));
+        commandShape = ShapeFactory.getShape(this.startPoint, this.endPoint, this.appState);
+        shapeList.addShape(commandShape);
         CommandHistory.add(this);
     }
 
     public void undo() {
-        this.shapeList.removeShape(commandShape);
+        shapeList.removeShape(commandShape);
     }
 
     public void redo(){
-        this.shapeList.addShape(commandShape);
+        shapeList.addShape(commandShape);
     }
 
 }

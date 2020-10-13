@@ -5,12 +5,14 @@ import controller.CommandHistory;
 import controller.IUndoable;
 import model.interfaces.ICommand;
 import model.interfaces.*;
+import model.shapes.NonArtisticShapeList;
 import model.shapes.ShapeList;
 
 public class MoveCommand implements ICommand,IUndoable{
     
     private IShapeList selectedShapeList;
     private IShapeList sList;
+    private IShapeList movedShapeList = new NonArtisticShapeList();
     private Point movement = new Point();
     private Point backwardsMovement = new Point();
 
@@ -25,29 +27,27 @@ public class MoveCommand implements ICommand,IUndoable{
 
     @Override
     public void run(){
-        move();
+        for (IShape shape:this.selectedShapeList){
+            this.sList.removeShape(shape);
+            shape.moveShape(movement);
+            movedShapeList.addShape(shape);
+            this.sList.addShape(shape);
+        }
         CommandHistory.add(this);
     }
     @Override
     public void undo() {
-        moveBack();
-    }
-    @Override
-    public void redo(){
-        move();
-    }
-
-    private void move(){
-        for (IShape shape:this.selectedShapeList){
+        for (IShape shape:this.movedShapeList){
             this.sList.removeShape(shape);
-            shape.moveShape(movement);
+            shape.moveShape(backwardsMovement);
             this.sList.addShape(shape);
         }
     }
-    private void moveBack(){
+    @Override
+    public void redo(){
         for (IShape shape:this.selectedShapeList){
             this.sList.removeShape(shape);
-            shape.moveShape(backwardsMovement);
+            shape.moveShape(movement);
             this.sList.addShape(shape);
         }
     }
