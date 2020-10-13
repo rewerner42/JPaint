@@ -23,7 +23,6 @@ public class Main {
         ApplicationState appState = new ApplicationState(uiModule);
         IJPaintController controller = new JPaintController(uiModule, appState);
         //MouseHandler mHandler = new MouseHandler();
-        System.out.print("hello");
         //paintCanvas.setCursor((new Cursor(Cursor.CROSSHAIR_CURSOR)));
         controller.setup();
         paintCanvas.addMouseListener(new MouseHandler(appState,paintCanvas));

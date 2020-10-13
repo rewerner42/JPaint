@@ -1,22 +1,23 @@
 package model.shapes;
-import model.ShapeType;
-import model.ShapeColor;
-import model.ShapeShadingType;
-import model.ColorConverter;
+
 import model.interfaces.IShape;
 import controller.Point;
+import model.ShapeType;
+import model.ColorConverter;
+import model.ShapeColor;
+import model.ShapeShadingType;
+
 import java.awt.*;
 
-public class Rectangle implements IShape {
+public class Triangle implements IShape{
     private Point startPoint;
     private Point endPoint;
-    private ShapeType shapeType = ShapeType.RECTANGLE;
+    private ShapeType shapeType = ShapeType.TRIANGLE;
     private ShapeColor primaryShapeColor;
     private ShapeColor secondaryShapeColor;
     private ShapeShadingType shapeShadingType;
-    
 
-    public Rectangle(Point p1, Point p2,ShapeColor primaryShapeColor, ShapeColor secondaryShapeColor,ShapeShadingType shapeShadingType){
+    public Triangle(Point p1, Point p2, ShapeColor primaryShapeColor, ShapeColor secondaryShapeColor, ShapeShadingType shapeShadingType){
         this.startPoint = p1;
         this.endPoint = p2;
         this.primaryShapeColor = primaryShapeColor;
@@ -33,7 +34,7 @@ public class Rectangle implements IShape {
     public Point getStartPoint() {
         return startPoint;
     }
-    
+
     @Override
     public ShapeType getShapeType(){
         return shapeType;
@@ -55,4 +56,5 @@ public class Rectangle implements IShape {
         this.startPoint.add(vector);
         this.endPoint.add(vector);
     }
+
 }

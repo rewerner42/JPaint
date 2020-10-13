@@ -2,23 +2,24 @@ package view.gui;
 
 import controller.Point;
 import controller.commands.CreateShapeCommand;
+import controller.commands.MoveCommand;
+import controller.commands.SelectCommand;
 import model.ShapeDrawer;
 import model.persistence.*;
+import model.shapes.NonArtisticShapeList;
 import model.shapes.ShapeList;
-import view.gui.*;
+import model.interfaces.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import view.interfaces.PaintCanvasBase;
-import java.lang.Math;
-
-import java.awt.*;
 
 public class MouseHandler extends MouseAdapter{
 
     private PaintCanvasBase paintCanvas;
     private ApplicationState applicationState;
     private ShapeDrawer shapeDrawer;
-    private ShapeList shapeList;
+    private IShapeList shapeList;
+    private IShapeList selectedShapeList;
     private Point startPoint;
     private Point endPoint;
 
@@ -30,8 +31,9 @@ public class MouseHandler extends MouseAdapter{
         super();
         this.applicationState = aState;
         this.paintCanvas = pCanvas;
-        shapeDrawer = new ShapeDrawer(paintCanvas,applicationState);
-        shapeList = new ShapeList(shapeDrawer);
+        this.shapeDrawer = new ShapeDrawer(paintCanvas,applicationState);
+        this.shapeList = new ShapeList(shapeDrawer);
+        this.selectedShapeList = new NonArtisticShapeList();
     }
 
     @Override
@@ -44,20 +46,17 @@ public class MouseHandler extends MouseAdapter{
         endPoint = new Point(e.getX(),e.getY());
         //Graphics2D graphics2d = paintCanvas.getGraphics2D();
         //graphics2d.setColor(Color.GREEN);
-        new CreateShapeCommand(shapeList,startPoint,endPoint).run();
-        
-        //System.out.println("unclick"+" "+e.getX()+" "+e.getY());
+        switch(applicationState.getActiveMouseMode()){
+            case MOVE:
+                System.out.println("MOVE");
+                new MoveCommand(this.startPoint, this.endPoint, this.shapeList, this.selectedShapeList).run();
+                break;
+            case SELECT:
+                new SelectCommand(this.startPoint, this.endPoint, this.shapeList, this.selectedShapeList).run();
+                break;
+            case DRAW:
+                new CreateShapeCommand(this.shapeList,this.startPoint,this.endPoint,this.applicationState).run();
+                break;
+        }
     }
-
-    /*
-    Draw function for testing purposes
-
-    public void draw(Graphics2D g2d){
-        int x1 = startPoint.getX();
-        int y1 = startPoint.getY();
-        int x2 = endPoint.getX();
-        int y2 = endPoint.getY();
-        
-        g2d.fillRect(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x1-x2),Math.abs(y1-y2));
-    } */
 }

@@ -3,38 +3,24 @@ package model.shapes;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import model.ShapeDrawer;
 import model.interfaces.IShape;
 import model.interfaces.IShapeList;
 
-public class ShapeList implements IShapeList{
+public class NonArtisticShapeList implements IShapeList{
     
     private ArrayList<IShape> canvasShapes = new ArrayList<>();
 
-    private ShapeDrawer shapeDrawer;
-
-    public ShapeList(ShapeDrawer shapeDrawer){
-        this.shapeDrawer = shapeDrawer;
-    }
-
-    public ShapeList(){
+    public NonArtisticShapeList(){
 
     }
 
     public void addShape(IShape shape){
         canvasShapes.add(shape);
-        makeArt();
     }
 
     public void removeShape(IShape shape){
         canvasShapes.remove(shape);
-        makeArt();
     }
-
-    private void makeArt(){
-        this.shapeDrawer.worker(this);
-    }
-
     public boolean containsShape(IShape shape){
         for(IShape tShape:this.canvasShapes){
             if(shape == tShape){
@@ -43,6 +29,7 @@ public class ShapeList implements IShapeList{
         }
         return false;
     }
+
     @Override
     public void clearList() {
         canvasShapes = new ArrayList<>();
@@ -52,5 +39,4 @@ public class ShapeList implements IShapeList{
     public Iterator<IShape> iterator(){
         return canvasShapes.iterator();
     }
-
 }

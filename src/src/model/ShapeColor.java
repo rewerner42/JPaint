@@ -1,6 +1,6 @@
 package model;
 
-public enum ShapeColor {
+public enum ShapeColor{
     BLACK,
     BLUE,
     CYAN,
@@ -13,5 +13,5 @@ public enum ShapeColor {
     PINK,
     RED,
     WHITE,
-    YELLOW
+    YELLOW    
 }
