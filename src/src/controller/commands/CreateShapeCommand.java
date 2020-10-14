@@ -21,7 +21,18 @@ public class CreateShapeCommand implements ICommand, IUndoable{
         this.appState = appState;
     }
     public void run(){ //needs start point and end point
-        commandShape = ShapeFactory.getShape(this.startPoint, this.endPoint, this.appState);
+        System.out.println(this.appState.getActiveShapeType());
+        switch (this.appState.getActiveShapeType()){
+            case ELLIPSE:
+                commandShape = ShapeFactory.createEllipse(this.startPoint, this.endPoint,this.appState);
+                break;
+            case RECTANGLE:
+                commandShape = ShapeFactory.createRectangle(this.startPoint, this.endPoint,this.appState);
+                break;
+            case TRIANGLE:
+                commandShape = ShapeFactory.createTriangle(this.startPoint, this.endPoint,this.appState);
+                break;
+        }
         shapeList.addShape(commandShape);
         CommandHistory.add(this);
     }
