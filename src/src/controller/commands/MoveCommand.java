@@ -6,7 +6,6 @@ import controller.IUndoable;
 import model.interfaces.ICommand;
 import model.interfaces.*;
 import model.shapes.NonArtisticShapeList;
-import model.shapes.ShapeList;
 
 public class MoveCommand implements ICommand,IUndoable{
     
