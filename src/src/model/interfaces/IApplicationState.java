@@ -25,4 +25,16 @@ public interface IApplicationState {
     ShapeShadingType getActiveShapeShadingType();
 
     MouseMode getActiveMouseMode();
+
+    IShapeList getSelected();
+
+    IShapeList getShapes();
+
+    IShapeList getClipboard();
+
+    void setClipboard(IShapeList clipboard);
+
+    void emptyClipboard();
+    
+    void updateSelectedShapeList(IShapeList selectedShapeList, IShapeList shapeList);
 }

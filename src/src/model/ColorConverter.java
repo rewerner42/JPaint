@@ -51,4 +51,35 @@ public class ColorConverter {
         }
         return color;
     }
+
+    public static ShapeColor convertColor(Color shapeColor){
+        Color currentColor = shapeColor;
+        if(currentColor.equals(Color.BLUE)){
+            return ShapeColor.BLUE;
+        }else if(currentColor.equals(Color.BLACK)){
+            return ShapeColor.BLACK;
+        }else if(currentColor.equals(Color.DARK_GRAY)){
+            return ShapeColor.DARK_GRAY;
+        }else if(currentColor.equals(Color.CYAN)){
+            return ShapeColor.CYAN;
+        }else if(currentColor.equals(Color.GRAY)){
+            return ShapeColor.GRAY;
+        }else if(currentColor.equals(Color.GREEN)){
+            return ShapeColor.GREEN;
+        }else if(currentColor.equals(Color.LIGHT_GRAY)){
+            return ShapeColor.LIGHT_GRAY;
+        }else if(currentColor.equals(Color.MAGENTA)){
+            return ShapeColor.MAGENTA;
+        }else if(currentColor.equals(Color.ORANGE)){
+            return ShapeColor.ORANGE;
+        }else if(currentColor.equals(Color.PINK)){
+            return ShapeColor.PINK;
+        }else if(currentColor.equals(Color.RED)){
+            return ShapeColor.RED;
+        }else if(currentColor.equals(Color.WHITE)){
+            return ShapeColor.WHITE;
+        }else{
+            return ShapeColor.YELLOW;
+        }
+    }
 }

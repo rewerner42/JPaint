@@ -9,6 +9,8 @@ import model.persistence.*;
 import model.shapes.NonArtisticShapeList;
 import model.shapes.ShapeList;
 import model.interfaces.*;
+import model.observers.EventPublisher;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 import view.interfaces.PaintCanvasBase;
@@ -22,6 +24,7 @@ public class MouseHandler extends MouseAdapter{
     private IShapeList selectedShapeList;
     private Point startPoint;
     private Point endPoint;
+    private EventPublisher events;
 
     public MouseHandler(){
         super();
@@ -34,6 +37,7 @@ public class MouseHandler extends MouseAdapter{
         this.shapeDrawer = new ShapeDrawer(paintCanvas,applicationState);
         this.shapeList = new ShapeList(shapeDrawer);
         this.selectedShapeList = new NonArtisticShapeList();
+        this.applicationState.updateSelectedShapeList(this.selectedShapeList,this.shapeList);
     }
 
     @Override

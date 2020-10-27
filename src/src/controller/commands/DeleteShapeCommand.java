@@ -4,14 +4,16 @@ import controller.CommandHistory;
 import controller.IUndoable;
 import model.interfaces.ICommand;
 import model.interfaces.IShape;
-import model.shapes.ShapeList;
+import model.interfaces.IShapeList;
 
 public class DeleteShapeCommand implements ICommand,IUndoable{
-    
-    private ShapeList shapeList;
-    private ShapeList deletedShapeList;
 
-    public DeleteShapeCommand(){
+    private IShapeList deletedShapeList;
+    private IShapeList shapeList;
+
+    public DeleteShapeCommand(IShapeList deletedShapeList, IShapeList shapeList){
+        this.deletedShapeList = deletedShapeList;
+        this.shapeList = shapeList;
     }
 
     @Override

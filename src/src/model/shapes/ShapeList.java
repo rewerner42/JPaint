@@ -10,7 +10,7 @@ import model.interfaces.IShapeList;
 public class ShapeList implements IShapeList{
     
     private ArrayList<IShape> canvasShapes = new ArrayList<>();
-
+    private int l = 0;
     private ShapeDrawer shapeDrawer;
 
     public ShapeList(ShapeDrawer shapeDrawer){
@@ -23,15 +23,19 @@ public class ShapeList implements IShapeList{
 
     public void addShape(IShape shape){
         canvasShapes.add(shape);
+        l = l +1;
+        System.out.println(l);
         makeArt();
     }
 
     public void removeShape(IShape shape){
         canvasShapes.remove(shape);
+        l = l - 1;
+        System.out.println(l);
         makeArt();
     }
 
-    private void makeArt(){
+    public void makeArt(){
         this.shapeDrawer.worker(this);
     }
 

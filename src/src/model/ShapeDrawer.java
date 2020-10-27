@@ -28,7 +28,10 @@ public class ShapeDrawer {
     }
 
     private void paintShapesToCanvas(ShapeList shapeList){
+        int i = 0;
         for(IShape shape : shapeList){
+            System.out.println(i);
+            i++;
             paintShape(shape);
         }
     }
@@ -77,6 +80,12 @@ public class ShapeDrawer {
                 
                 break;
         }
+        if(appState.getSelected().containsShape(shape)){
+            Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1, new float[]{9}, 0);
+            graphics2d.setStroke(stroke);
+            graphics2d.setColor(Color.BLACK);
+            graphics2d.drawRect(Math.min(x1,x2)-5,Math.min(y1,y2)-5, Math.abs(x1-x2)+10,Math.abs(y1-y2)+10);
+        }
     }
 
     private void paintTri(IShape shape){
@@ -94,7 +103,7 @@ public class ShapeDrawer {
         else{ // if downwards movement
             x3 = x1;
             y3 = y2;
-        }
+         }
         int [] xPoints = {x1,x2,x3};
         int [] yPoints = {y1,y2,y3};
         switch (shape.getShapeShadingType()){
@@ -115,6 +124,44 @@ public class ShapeDrawer {
                 graphics2d.setColor(shape.getSecondaryShapeColor());
                 graphics2d.drawPolygon(xPoints, yPoints, 3);
                 break;
+        }
+        
+        if (y1 > y2){ // if upwards movement
+            y2 = y2 - 10;//D
+            y1 = y1 + 5;            
+            if(x1 > x2){ //leftwards
+                x1 = x1 + 10;//D
+                x2 = x2 - 5;
+            }
+            else{//rightwards
+                x1 = x1 - 10;//D
+                x2 = x2 + 5;
+            }
+            x3 = x2;
+            y3 = y1;
+        }
+        else{ // if downwards movement
+            y1 = y1 - 10;//D
+            y2 = y2 + 5;
+            if(x1 > x2){
+                x1 = x1 + 5;
+                x2 = x2 - 10;//D
+            }
+            else{
+                x1 = x1 - 5;
+                x2 = x2 + 10;//D
+                
+            }
+            x3 = x1;
+            y3 = y2;
+        }
+        int [] nxPoints = {x1,x2,x3};
+        int [] nyPoints = {y1,y2,y3};
+        if(appState.getSelected().containsShape(shape)){
+            Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1, new float[]{9}, 0);
+            graphics2d.setStroke(stroke);
+            graphics2d.setColor(Color.BLACK);
+            graphics2d.drawPolygon(nxPoints, nyPoints, 3);
         }
     }
     private void paintEll(IShape shape){
@@ -141,6 +188,12 @@ public class ShapeDrawer {
                 graphics2d.setColor(shape.getSecondaryShapeColor());
                 graphics2d.drawOval(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x1-x2),Math.abs(y1-y2));
                 break;
+        }
+        if(appState.getSelected().containsShape(shape)){
+            Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1, new float[]{9}, 0);
+            graphics2d.setStroke(stroke);
+            graphics2d.setColor(Color.BLACK);
+            graphics2d.drawOval(Math.min(x1,x2)-5,Math.min(y1,y2)-5,Math.abs(x1-x2)+10,Math.abs(y1-y2)+10);
         }
     }
 }

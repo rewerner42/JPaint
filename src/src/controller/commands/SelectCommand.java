@@ -2,9 +2,12 @@ package controller.commands;
 
 import controller.*;
 import model.interfaces.*;
+import model.shapes.NonArtisticShapeList;
+import model.shapes.ShapeList;
 
 public class SelectCommand implements ICommand,IUndoable{
     
+    private IShapeList thisSelection;
     private IShapeList selectedShapeList;
     private IShapeList shapeList;
     private Point selectionBeginning;
@@ -15,6 +18,7 @@ public class SelectCommand implements ICommand,IUndoable{
         this.selectedShapeList = selectedShapeList;
         this.selectionBeginning = startPoint;
         this.selectionEnding = endPoint;
+        this.thisSelection = new NonArtisticShapeList();
     }
     @Override
     public void run(){
@@ -24,7 +28,7 @@ public class SelectCommand implements ICommand,IUndoable{
     }
     @Override
     public void redo(){
-        addToList();
+        addToList(this.thisSelection);
     }
     @Override 
     public void undo(){
@@ -37,14 +41,33 @@ public class SelectCommand implements ICommand,IUndoable{
             if (contains(shape)){
                 System.out.println(shape);
                 this.selectedShapeList.addShape(shape);
+                this.thisSelection.addShape(shape);
             }
         }
+        doArt();
+    }
+    private void addToList(IShapeList list){
+        list.clearList();
+        for (IShape shape:list){
+            if (contains(shape)){
+                System.out.println(shape);
+                this.selectedShapeList.addShape(shape);
+            }
+        }
+        doArt();
     }
     private void removeFromList(){
-        for (IShape shape:selectedShapeList){
+        for (IShape shape:thisSelection){
             this.selectedShapeList.removeShape(shape);
         }
+        doArt();
     }
+
+    private void doArt(){
+        ShapeList temp = (ShapeList) this.shapeList;
+        temp.makeArt();
+    }
+
     private boolean contains(IShape shape){
         Point sPoint = shape.getStartPoint();
         Point ePoint = shape.getEndPoint();

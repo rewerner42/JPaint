@@ -7,7 +7,10 @@ import model.MouseMode;
 import model.dialogs.DialogProvider;
 import model.interfaces.IApplicationState;
 import model.interfaces.IDialogProvider;
+import model.interfaces.IListener;
 import view.interfaces.IUiModule;
+import model.interfaces.IShapeList;
+import model.observers.SelectionListener;
 
 public class ApplicationState implements IApplicationState {
     private final IUiModule uiModule;
@@ -18,11 +21,27 @@ public class ApplicationState implements IApplicationState {
     private ShapeColor activeSecondaryColor;
     private ShapeShadingType activeShapeShadingType;
     private MouseMode activeMouseMode;
+    private IShapeList selectedShapeList;
+    private IShapeList shapeList;
+    private IListener shapeListener;
+    private IShapeList clipBoard;
+    
 
     public ApplicationState(IUiModule uiModule) {
         this.uiModule = uiModule;
         this.dialogProvider = new DialogProvider(this);
         setDefaults();
+        this.shapeListener = new SelectionListener(this);
+    }
+
+    public IListener getListener(){
+        return this.shapeListener;
+    }
+
+    @Override
+    public void updateSelectedShapeList(IShapeList selectedShapeList, IShapeList shapeList){
+        this.selectedShapeList = selectedShapeList;
+        this.shapeList = shapeList;
     }
 
     @Override
@@ -50,6 +69,30 @@ public class ApplicationState implements IApplicationState {
     @Override
     public void setActiveStartAndEndPointMode() {
         activeMouseMode = uiModule.getDialogResponse(dialogProvider.getChooseStartAndEndPointModeDialog());
+    }
+
+    @Override
+    public IShapeList getSelected(){
+        return this.selectedShapeList;
+    }
+
+    @Override
+    public IShapeList getClipboard(){
+        return this.clipBoard;
+    }
+
+    @Override
+    public void setClipboard(IShapeList clipboard){
+        this.clipBoard = clipboard;
+    }
+
+    public void emptyClipboard(){
+        this.clipBoard.clearList();
+    }
+
+    @Override
+    public IShapeList getShapes(){
+        return this.shapeList;
     }
 
     @Override
