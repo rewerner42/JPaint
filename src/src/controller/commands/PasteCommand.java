@@ -13,29 +13,29 @@ import controller.Point;
 public class PasteCommand implements ICommand, IUndoable{
     
     IShapeList objectsToPaste = new NonArtisticShapeList();
+    IShapeList clonedObjects = new NonArtisticShapeList();
     IShapeList shapeList;
     IApplicationState appState;
-    IShapeList clipBoard;
+    
 
     public PasteCommand(IApplicationState appState){
         this.shapeList = appState.getShapes();
-        this.clipBoard = appState.getClipboard();
+        IShapeList clipBoard = appState.getClipboard();
+        for(IShape shape:clipBoard){
+            this.objectsToPaste.addShape(shape);
         }
+        IShape clonedShape;
+        for(IShape shape:this.objectsToPaste){
+            clonedShape = ShapeFactory.createShapeFromShape(shape);
+            clonedShape.moveShape(new Point(50,50));
+            clonedObjects.addShape(clonedShape);
+            System.out.println("pasting Shape");
+        }
+    }
 
     @Override
     public void run(){
-        
-        IShape s;
-        for(IShape shape:clipBoard){
-            System.out.println(shape);
-            
-            s = ShapeFactory.createShapeFromShape(shape);
-            System.out.println(s);
-            this.shapeList.addShape(s);
-            this.objectsToPaste.addShape(s);
-            s.moveShape(new Point(20,20));
-            System.out.println("pasting Shape");
-        }
+        paste();
         CommandHistory.add(this);
     }
     @Override
@@ -50,15 +50,13 @@ public class PasteCommand implements ICommand, IUndoable{
         paste();    
     }
     private void paste(){
-        for(IShape shape:this.objectsToPaste){
+        for(IShape shape:this.clonedObjects){
             this.shapeList.addShape(shape);
-            System.out.println("pasting Shape");
         }
     }
     private void removePasted(){
-        for(IShape shape:this.objectsToPaste){
+        for(IShape shape:this.clonedObjects){
             this.shapeList.removeShape(shape);
-            System.out.println("removing Shape");
         }
     }
 }

@@ -6,15 +6,12 @@ import model.interfaces.IApplicationState;
 import model.interfaces.ICommand;
 import model.interfaces.IShapeList;
 import model.shapes.NonArtisticShapeList;
-import model.shapes.NullShapeList;
 import model.interfaces.IShape;
 
 public class CopyCommand implements ICommand, IUndoable{
     
     private IShapeList selectedShapeList;
     private IShapeList before = new NonArtisticShapeList();
-    private IShapeList after;
-    private IShapeList toClipBoard = new NonArtisticShapeList();
     private IApplicationState appState;
 
     public CopyCommand(IApplicationState appState){
