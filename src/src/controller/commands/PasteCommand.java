@@ -26,7 +26,7 @@ public class PasteCommand implements ICommand, IUndoable{
         }
         IShape clonedShape;
         for(IShape shape:this.objectsToPaste){
-            clonedShape = ShapeFactory.createShapeFromShape(shape);
+            clonedShape = ShapeFactory.pasteShapeFromShape(shape);
             clonedShape.moveShape(new Point(50,50));
             clonedObjects.addShape(clonedShape);
             System.out.println("pasting Shape");

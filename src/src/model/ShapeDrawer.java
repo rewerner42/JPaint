@@ -5,6 +5,11 @@ import model.interfaces.*;
 import model.shapes.ShapeList;
 import view.interfaces.PaintCanvasBase;
 import java.awt.Graphics2D;
+
+import calcs.Actual;
+import calcs.Outline;
+import calcs.TriangleVertices;
+
 import java.awt.*;
 import controller.Point;
 
@@ -89,23 +94,12 @@ public class ShapeDrawer {
     }
 
     private void paintTri(IShape shape){
+        TriangleVertices triVerCal = new TriangleVertices();
         Point startPoint = shape.getStartPoint();
         Point endPoint = shape.getEndPoint();
-        int x1 = startPoint.getX();
-        int y1 = startPoint.getY();
-        int x2 = endPoint.getX();
-        int y2 = endPoint.getY();
-        int x3,y3;
-        if (y1 > y2){ // if upwards movement
-            x3 = x2;
-            y3 = y1;
-        }
-        else{ // if downwards movement
-            x3 = x1;
-            y3 = y2;
-         }
-        int [] xPoints = {x1,x2,x3};
-        int [] yPoints = {y1,y2,y3};
+        triVerCal.setStrategy(new Actual());
+        int [] xPoints = triVerCal.getXVertices(startPoint, endPoint);
+        int [] yPoints = triVerCal.getYVertices(startPoint, endPoint);
         switch (shape.getShapeShadingType()){
             case FILLED_IN:
                 graphics2d.setColor(shape.getPrimaryShapeColor());
@@ -125,38 +119,9 @@ public class ShapeDrawer {
                 graphics2d.drawPolygon(xPoints, yPoints, 3);
                 break;
         }
-        
-        if (y1 > y2){ // if upwards movement
-            y2 = y2 - 10;//D
-            y1 = y1 + 5;            
-            if(x1 > x2){ //leftwards
-                x1 = x1 + 10;//D
-                x2 = x2 - 5;
-            }
-            else{//rightwards
-                x1 = x1 - 10;//D
-                x2 = x2 + 5;
-            }
-            x3 = x2;
-            y3 = y1;
-        }
-        else{ // if downwards movement
-            y1 = y1 - 10;//D
-            y2 = y2 + 5;
-            if(x1 > x2){
-                x1 = x1 + 5;
-                x2 = x2 - 10;//D
-            }
-            else{
-                x1 = x1 - 5;
-                x2 = x2 + 10;//D
-                
-            }
-            x3 = x1;
-            y3 = y2;
-        }
-        int [] nxPoints = {x1,x2,x3};
-        int [] nyPoints = {y1,y2,y3};
+        triVerCal.setStrategy(new Outline());
+        int [] nxPoints = triVerCal.getXVertices(startPoint, endPoint);
+        int [] nyPoints = triVerCal.getYVertices(startPoint, endPoint);
         if(appState.getSelected().containsShape(shape)){
             Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1, new float[]{9}, 0);
             graphics2d.setStroke(stroke);
