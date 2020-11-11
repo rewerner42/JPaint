@@ -27,12 +27,9 @@ public class UnGroupCommand implements ICommand, IUndoable {
         for(IShape shape:this.selectedShapeList){
             if(shape.getShapeType() == ShapeType.GROUP){
                 groupList.addShape(shape);
-                for(IShape shape2:(IShapeList)shape){
-                    this.shapeList.addShape(shape2);
-                }
-                this.shapeList.removeShape(shape);
             }
         }
+        splitGroup();
         CommandHistory.add(this);
     }
 
@@ -48,18 +45,22 @@ public class UnGroupCommand implements ICommand, IUndoable {
 
     private void splitGroup(){
         for(IShape group:this.groupList){
+            this.shapeList.removeShape(group);
+            this.selectedShapeList.removeShape(group);
             for(IShape shape2:(IShapeList)group){
+                this.selectedShapeList.addShape(shape2);
                 this.shapeList.addShape(shape2);
             }
-            this.shapeList.removeShape(group);
         }
     }
 
     private void fuseGroup(){
         for(IShape group:this.groupList){
             for(IShape shape2:(IShapeList)group){
+                this.selectedShapeList.removeShape(shape2);
                 this.shapeList.removeShape(shape2);
             }
+            this.selectedShapeList.addShape(group);
             this.shapeList.addShape(group);
         }
     }   

@@ -44,16 +44,20 @@ public class GroupCommand implements ICommand, IUndoable {
 
     private void addGroup(){
         for(IShape shape:this.shapeGroup){
+            this.selectedShapeList.removeShape(shape);
             this.shapeList.removeShape(shape);
         }
+        this.selectedShapeList.addShape(shapeGroup);
         this.shapeList.addShape(shapeGroup);
     }
 
     private void splitGroup(){
         for(IShape shape:this.shapeGroup){
+            this.selectedShapeList.addShape(shape);
             this.shapeList.addShape(shape);
         }
-        this.shapeList.removeShape(shapeGroup);
+        this.selectedShapeList.removeShape(shapeGroup);
+        this.shapeList.removeShape(shapeGroup);        
     }
 
 }
