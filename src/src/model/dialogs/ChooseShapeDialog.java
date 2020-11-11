@@ -24,7 +24,11 @@ public class ChooseShapeDialog implements IDialogChoice<ShapeType> {
 
     @Override
     public ShapeType[] getDialogOptions() {
-        return ShapeType.values();
+        ShapeType[] shapes = new ShapeType[3];
+        shapes[0] = ShapeType.ELLIPSE;
+        shapes[1] = ShapeType.RECTANGLE;
+        shapes[2] = ShapeType.TRIANGLE;
+        return shapes;
     }
 
     @Override

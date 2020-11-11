@@ -9,7 +9,6 @@ import model.persistence.*;
 import model.shapes.NonArtisticShapeList;
 import model.shapes.ShapeList;
 import model.interfaces.*;
-import model.observers.EventPublisher;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
@@ -24,7 +23,6 @@ public class MouseHandler extends MouseAdapter{
     private IShapeList selectedShapeList;
     private Point startPoint;
     private Point endPoint;
-    private EventPublisher events;
 
     public MouseHandler(){
         super();
