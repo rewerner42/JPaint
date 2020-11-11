@@ -2,6 +2,7 @@ package model;
 
 import model.persistence.ApplicationState;
 import model.interfaces.*;
+import model.shapes.ShapeGroup;
 import model.shapes.ShapeList;
 import view.interfaces.PaintCanvasBase;
 import java.awt.Graphics2D;
@@ -47,18 +48,56 @@ public class ShapeDrawer {
     private void paintShape(IShape shape){
         switch(shape.getShapeType()){
             case ELLIPSE:
-                paintEll(shape);
+                paintEll(shape, false);
                 break;
             case RECTANGLE:
-                paintRect(shape);
+                paintRect(shape, false);
                 break;
             case TRIANGLE:
-                paintTri(shape);
+                paintTri(shape, false);
+                break;
+            case GROUP:
+                groupOutline(shape);
+                paintGroup((ShapeGroup)shape);
                 break;
         }
     }
 
-    private void paintRect(IShape shape){
+    private void paintGroup(IShapeList l){
+        for(IShape shape:l){
+            switch(shape.getShapeType()){
+                case ELLIPSE:
+                    paintEll(shape, true);
+                    break;
+                case RECTANGLE:
+                    paintRect(shape, true);
+                    break;
+                case TRIANGLE:
+                    paintTri(shape, true);
+                    break;
+                case GROUP:
+                    paintGroup((ShapeGroup)shape);
+                    break;
+            }
+        }
+    }
+
+    private void groupOutline(IShape shape){
+        if(appState.getSelected().containsShape(shape)){
+            Point startPoint = shape.getStartPoint();
+            Point endPoint = shape.getEndPoint();
+            int x1 = startPoint.getX();
+            int y1 = startPoint.getY();
+            int x2 = endPoint.getX();
+            int y2 = endPoint.getY();
+            Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1, new float[]{9}, 0);
+            graphics2d.setStroke(stroke);
+            graphics2d.setColor(Color.BLACK);
+            graphics2d.drawRect(Math.min(x1,x2)-5,Math.min(y1,y2)-5, Math.abs(x1-x2)+10,Math.abs(y1-y2)+10);
+        }
+    }
+
+    private void paintRect(IShape shape, boolean group){
         Point startPoint = shape.getStartPoint();
         Point endPoint = shape.getEndPoint();
         int x1 = startPoint.getX();
@@ -85,7 +124,7 @@ public class ShapeDrawer {
                 
                 break;
         }
-        if(appState.getSelected().containsShape(shape)){
+        if(appState.getSelected().containsShape(shape) && !group){
             Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1, new float[]{9}, 0);
             graphics2d.setStroke(stroke);
             graphics2d.setColor(Color.BLACK);
@@ -93,7 +132,7 @@ public class ShapeDrawer {
         }
     }
 
-    private void paintTri(IShape shape){
+    private void paintTri(IShape shape, boolean group){
         TriangleVertices triVerCal = new TriangleVertices();
         Point startPoint = shape.getStartPoint();
         Point endPoint = shape.getEndPoint();
@@ -122,14 +161,14 @@ public class ShapeDrawer {
         triVerCal.setStrategy(new Outline());
         int [] nxPoints = triVerCal.getXVertices(startPoint, endPoint);
         int [] nyPoints = triVerCal.getYVertices(startPoint, endPoint);
-        if(appState.getSelected().containsShape(shape)){
+        if(appState.getSelected().containsShape(shape) && !group){
             Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1, new float[]{9}, 0);
             graphics2d.setStroke(stroke);
             graphics2d.setColor(Color.BLACK);
             graphics2d.drawPolygon(nxPoints, nyPoints, 3);
         }
     }
-    private void paintEll(IShape shape){
+    private void paintEll(IShape shape, boolean group){
         Point startPoint = shape.getStartPoint();
         Point endPoint = shape.getEndPoint();
         int x1 = startPoint.getX();
@@ -154,7 +193,7 @@ public class ShapeDrawer {
                 graphics2d.drawOval(Math.min(x1,x2),Math.min(y1,y2),Math.abs(x1-x2),Math.abs(y1-y2));
                 break;
         }
-        if(appState.getSelected().containsShape(shape)){
+        if(appState.getSelected().containsShape(shape) && !group){
             Stroke stroke = new BasicStroke(3, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1, new float[]{9}, 0);
             graphics2d.setStroke(stroke);
             graphics2d.setColor(Color.BLACK);
